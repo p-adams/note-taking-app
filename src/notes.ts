@@ -12,7 +12,18 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
   const addButton = $el("#addButton");
   const noteList = $el("#noteList");
 
+  noteList?.addEventListener("click", deleteNote);
+
   addButton?.addEventListener("click", addNote);
+
+  function deleteNote(e: Event) {
+    const target = e.target as HTMLUListElement;
+    if (target.classList.contains("deleteNote")) {
+      const $index = parseInt(target.getAttribute("data-index")!);
+      NOTES.splice($index, 1);
+      renderNotes();
+    }
+  }
 
   function addNote() {
     const noteText = noteInput!.value.trim();
@@ -35,7 +46,7 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
       const $li = document.createElement("li");
       $li.innerHTML = `
             <span>${note.text}</span>
-            <button data-index="${index}">Delete</button>
+            <button class="deleteNote" data-index="${index}">Delete</button>
         `;
       noteList!.appendChild($li);
     }
