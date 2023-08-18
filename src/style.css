@@ -44,8 +44,15 @@ h1 {
 }
 
 .notes--outer {
+  min-height: 500px;
   display: grid;
   grid-template-columns: 200px 1fr;
+  outline: 1px solid lightgray;
+  border-radius: 4px;
+}
+
+.notes--outer aside {
+  border-right: 1px solid lightgray;
 }
 
 .logo {
@@ -98,5 +105,11 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+@media (max-width: 768px) {
+  .notes--outer {
+    grid-template-columns: 1fr;
   }
 }

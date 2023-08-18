@@ -7,10 +7,9 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
       <ul id="noteList"></ul>
     </aside>
     <div class="main">
-      <input id="noteInput"/>
+      <textarea id="noteInput"></textarea>
       <button id="addButton">add</button>
     </div>
-    
    </div>`;
 
   const noteInput = $el<HTMLInputElement>("#noteInput");
