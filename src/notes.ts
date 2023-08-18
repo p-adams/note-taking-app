@@ -2,10 +2,15 @@ import { NOTES } from "./data";
 import { $el, generateUUID } from "./utils";
 
 export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
-  element.innerHTML = `<div>
-    <input id="noteInput"/>
-    <button id="addButton">add</button>
-    <ul id="noteList"></ul>
+  element.innerHTML = `<div class="notes--outer">
+    <aside>
+      <ul id="noteList"></ul>
+    </aside>
+    <div class="main">
+      <input id="noteInput"/>
+      <button id="addButton">add</button>
+    </div>
+    
    </div>`;
 
   const noteInput = $el<HTMLInputElement>("#noteInput");
@@ -42,6 +47,11 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
 
   function renderNotes() {
     noteList!.innerHTML = "";
+    if (!NOTES.length) {
+      const $li = document.createElement("li");
+      $li.innerHTML = `<span>No Notes</span>`;
+      noteList!.appendChild($li);
+    }
     for (const [index, note] of NOTES.entries()) {
       const $li = document.createElement("li");
       $li.innerHTML = `
@@ -51,4 +61,6 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
       noteList!.appendChild($li);
     }
   }
+
+  renderNotes();
 }

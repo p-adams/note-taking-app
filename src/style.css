@@ -43,6 +43,11 @@ h1 {
   text-align: center;
 }
 
+.notes--outer {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
