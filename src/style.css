@@ -43,7 +43,7 @@ h1 {
   text-align: center;
 }
 
-.notes--outer {
+.notes--inner {
   min-height: 500px;
   display: grid;
   grid-template-columns: 200px 1fr;
@@ -51,7 +51,7 @@ h1 {
   border-radius: 4px;
 }
 
-.notes--outer aside {
+.notes--inner aside {
   border-right: 1px solid lightgray;
 }
 
@@ -109,7 +109,7 @@ button:focus-visible {
 }
 
 @media (max-width: 768px) {
-  .notes--outer {
+  .notes--inner {
     grid-template-columns: 1fr;
   }
 }

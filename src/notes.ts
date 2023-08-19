@@ -3,12 +3,17 @@ import { $el, generateUUID } from "./utils";
 
 export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
   element.innerHTML = `<div class="notes--outer">
-    <aside>
-      <ul id="noteList"></ul>
-    </aside>
-    <div class="main">
-      <textarea id="noteInput"></textarea>
-      <button id="addButton">add</button>
+    <div>
+      toolbar
+    </div>
+    <div class="notes--inner">
+      <aside>
+        <ul id="noteList"></ul>
+      </aside>
+      <div class="main">
+        <textarea id="noteInput"></textarea>
+        <button id="addButton">add</button>
+      </div>
     </div>
    </div>`;
 
