@@ -3,6 +3,7 @@ import { $el, generateUUID } from "./utils";
 
 export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
   let notes = NOTES;
+  let currentNote: Note | null = null;
   element.innerHTML = `<div class="notes--outer">
     <div>
       toolbar
@@ -30,9 +31,9 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
     const target = e.target as HTMLUListElement;
     if (target.classList.contains("deleteNote")) {
       const $index = parseInt(target.getAttribute("data-index")!);
-      NOTES.splice($index, 1);
       const note = notes[$index];
       notes = notes.filter(($note) => $note.id !== note.id);
+      currentNote = notes[0];
       renderNotes();
     }
   }
@@ -47,7 +48,8 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
       text: noteText,
       time_stamp: new Date().toUTCString(),
     };
-    notes = [newNote, ...notes];
+    currentNote = newNote;
+    notes = [currentNote, ...notes];
     renderNotes();
     noteInput!.value = "";
   }
@@ -61,9 +63,12 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
     }
     for (const [index, note] of notes.entries()) {
       const $li = document.createElement("li");
+
       $li.innerHTML = `
-            <span>${note.text}</span>
+            <div class="${note.id === currentNote?.id ? "current-note" : ""}">
+              <span>${note.text}</span>
             <button class="deleteNote" data-index="${index}">Delete</button>
+            </div>
         `;
       noteList!.appendChild($li);
     }

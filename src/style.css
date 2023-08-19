@@ -55,6 +55,10 @@ h1 {
   border-right: 1px solid lightgray;
 }
 
+.current-note {
+  outline: 1px solid salmon;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
