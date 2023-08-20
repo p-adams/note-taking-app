@@ -11,3 +11,11 @@ export function $el<T extends HTMLElement = HTMLElement>(
 ): T | null {
   return document.querySelector<T>(selector)!;
 }
+
+export function getNoteFromDataIndex<T extends HTMLElement = HTMLElement>(
+  target: T,
+  notes: Note[]
+) {
+  const $index = parseInt(target.getAttribute("data-index")!);
+  return notes[$index];
+}

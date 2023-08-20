@@ -1,5 +1,5 @@
 import { NOTES } from "./data";
-import { $el, generateUUID } from "./utils";
+import { $el, generateUUID, getNoteFromDataIndex } from "./utils";
 
 export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
   let notes = NOTES;
@@ -23,15 +23,27 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
   const addButton = $el("#addButton");
   const noteList = $el("#noteList");
 
-  noteList?.addEventListener("click", deleteNote);
+  noteList?.addEventListener("click", noteListClick);
 
   addButton?.addEventListener("click", addNote);
 
-  function deleteNote(e: Event) {
+  function noteListClick(e: Event) {
     const target = e.target as HTMLUListElement;
     if (target.classList.contains("deleteNote")) {
-      const $index = parseInt(target.getAttribute("data-index")!);
-      const note = notes[$index];
+      deleteNote(target);
+      return;
+    }
+    const noteElement = target.closest(".note") as HTMLDivElement;
+    if (noteElement) {
+      const note = getNoteFromDataIndex<HTMLDivElement>(noteElement, notes);
+      currentNote = notes.find(($note) => $note.id === note.id) ?? null;
+      renderNotes();
+    }
+  }
+
+  function deleteNote(target: HTMLUListElement) {
+    if (target.classList.contains("deleteNote")) {
+      const note = getNoteFromDataIndex<HTMLUListElement>(target, notes);
       notes = notes.filter(($note) => $note.id !== note.id);
       currentNote = notes[0];
       renderNotes();
@@ -63,9 +75,10 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
     }
     for (const [index, note] of notes.entries()) {
       const $li = document.createElement("li");
-
       $li.innerHTML = `
-            <div class="${note.id === currentNote?.id ? "current-note" : ""}">
+            <div class="note ${
+              note.id === currentNote?.id ? "current-note" : ""
+            }" data-index="${index}">
               <span>${note.text}</span>
             <button class="deleteNote" data-index="${index}">Delete</button>
             </div>
