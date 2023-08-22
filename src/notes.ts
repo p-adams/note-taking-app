@@ -8,9 +8,7 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
 
   element.innerHTML = `<div class="notes--outer">
     <div class="toolbar--outer">
-      <button id="editButton">Edit</button>
-      <button id="newButton">New</button>
-      <button id="saveButton">Save</button>
+      <button id="createButton">New</button>
     </div>
     <div class="notes--inner">
       <aside>
@@ -23,12 +21,23 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
    </div>`;
 
   const noteInput = $el<HTMLInputElement>("#noteInput");
-  const saveButton = $el("#saveButton");
-  const noteList = $el("#noteList");
+  const createButton = $el<HTMLButtonElement>("#createButton");
+  const noteList = $el<HTMLUListElement>("#noteList");
 
   noteList?.addEventListener("click", noteListClick);
 
-  saveButton?.addEventListener("click", saveNote);
+  noteInput?.addEventListener("blur", saveNote);
+
+  createButton?.addEventListener("click", createNote);
+
+  function createNote() {
+    currentNote = {
+      id: generateUUID(),
+      text: "",
+      time_stamp: new Date().toUTCString(),
+    };
+    renderNotes();
+  }
 
   function noteListClick(e: Event) {
     const target = e.target as HTMLUListElement;
@@ -55,6 +64,7 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
 
   function saveNote() {
     const noteText = noteInput!.value.trim();
+
     if (noteText === "") {
       return;
     }
@@ -78,13 +88,15 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
     }
     for (const [index, note] of notes.entries()) {
       const $li = document.createElement("li");
-      const noteListItem = setupNote({
-        element: $li,
-        note,
-        currentNote: currentNote!,
-        index,
-      });
-      noteList!.appendChild(noteListItem);
+
+      noteList!.appendChild(
+        setupNote({
+          element: $li,
+          note,
+          currentNote: currentNote!,
+          index,
+        })
+      );
     }
   }
 
