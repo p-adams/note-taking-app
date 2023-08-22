@@ -1,16 +1,18 @@
 import "./style.css";
 
+interface NoteSetup {
+  element: HTMLLIElement;
+  note: Note;
+  currentNote: Note;
+  index: number;
+}
+
 export function setupNote({
   element,
   note,
   currentNote,
   index,
-}: {
-  element: HTMLLIElement;
-  note: Note;
-  currentNote: Note;
-  index: number;
-}): HTMLLIElement {
+}: NoteSetup): HTMLLIElement {
   element.innerHTML = `
     <div class="note ${
       note.id === currentNote?.id ? "current-note" : ""
