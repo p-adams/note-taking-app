@@ -1,12 +1,16 @@
 import { NOTES } from "./data";
+import { setupNote } from "./setupNote";
 import { $el, generateUUID, getNoteFromDataIndex } from "./utils";
 
 export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
   let notes = NOTES;
   let currentNote: Note | null = null;
+
   element.innerHTML = `<div class="notes--outer">
-    <div>
-      toolbar
+    <div class="toolbar--outer">
+      <button id="editButton">Edit</button>
+      <button id="newButton">New</button>
+      <button id="saveButton">Save</button>
     </div>
     <div class="notes--inner">
       <aside>
@@ -14,18 +18,17 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
       </aside>
       <div class="main">
         <textarea id="noteInput"></textarea>
-        <button id="addButton">add</button>
       </div>
     </div>
    </div>`;
 
   const noteInput = $el<HTMLInputElement>("#noteInput");
-  const addButton = $el("#addButton");
+  const saveButton = $el("#saveButton");
   const noteList = $el("#noteList");
 
   noteList?.addEventListener("click", noteListClick);
 
-  addButton?.addEventListener("click", addNote);
+  saveButton?.addEventListener("click", saveNote);
 
   function noteListClick(e: Event) {
     const target = e.target as HTMLUListElement;
@@ -50,7 +53,7 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
     }
   }
 
-  function addNote() {
+  function saveNote() {
     const noteText = noteInput!.value.trim();
     if (noteText === "") {
       return;
@@ -75,15 +78,13 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
     }
     for (const [index, note] of notes.entries()) {
       const $li = document.createElement("li");
-      $li.innerHTML = `
-            <div class="note ${
-              note.id === currentNote?.id ? "current-note" : ""
-            }" data-index="${index}">
-              <span>${note.text}</span>
-            <button class="deleteNote" data-index="${index}">Delete</button>
-            </div>
-        `;
-      noteList!.appendChild($li);
+      const noteListItem = setupNote({
+        element: $li,
+        note,
+        currentNote: currentNote!,
+        index,
+      });
+      noteList!.appendChild(noteListItem);
     }
   }
 

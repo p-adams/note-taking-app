@@ -1,0 +1,8 @@
+.note {
+  display: flex;
+  justify-content: space-between;
+}
+
+.current-note {
+  background-color: lightgray;
+}

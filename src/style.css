@@ -49,6 +49,10 @@ h1 {
   align-items: center;
 }
 
+.toolbar--outer {
+  margin-bottom: 10px;
+}
+
 .notes--inner {
   min-height: 500px;
   display: grid;
@@ -61,8 +65,9 @@ h1 {
   border-right: 1px solid lightgray;
 }
 
-.current-note {
-  outline: 1px solid salmon;
+#noteInput {
+  height: 100%;
+  resize: none;
 }
 
 .mosaic-tile {
