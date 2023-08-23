@@ -9,10 +9,10 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
 
   element.innerHTML = `<div class="notes--outer">
     <div class="toolbar--outer">
-      <button id="createButton">New</button>
-      <button id="addButton">Add</button> 
-      <button id="editButton">Edit</button>
-      <button id="saveButton">Save</button>
+      <button id="createButton">Create New</button>
+      <button id="addButton">Add Note</button> 
+      <button id="editButton">Edit Note</button>
+      <button id="saveButton">Save Edit</button>
     </div>
     <div class="notes--inner">
       <aside>
@@ -33,15 +33,16 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
 
   noteList?.addEventListener("click", noteListClick);
 
-  addButton?.addEventListener("click", saveNote);
+  addButton?.addEventListener("click", addNote);
 
   createButton?.addEventListener("click", createNote);
 
   editButton?.addEventListener("click", () => {
-    console.log(currentNote);
     if (currentNote !== null) {
       noteInput!.value = currentNote!.text;
-      currentNote.isEditing = true;
+      createButton!.disabled = true;
+      addButton!.disabled = true;
+      saveButton!.disabled = false;
       renderNotes();
     }
   });
@@ -53,7 +54,9 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
         ...notes.filter(($note) => $note.id !== currentNote?.id),
       ];
     }
-    currentNote!.isEditing = false;
+    createButton!.disabled = false;
+    addButton!.disabled = false;
+    saveButton!.disabled = true;
     renderNotes();
   });
 
@@ -63,7 +66,6 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
       id: generateUUID(),
       text: "",
       time_stamp: new Date().toUTCString(),
-      isEditing: false,
     };
     noteInput!.value = currentNote!.text;
     renderNotes();
@@ -93,9 +95,8 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
     }
   }
 
-  function saveNote() {
+  function addNote() {
     const noteText = noteInput!.value.trim();
-    console.log("test");
     if (noteText === "") {
       return;
     }
@@ -103,7 +104,6 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
       id: generateUUID(),
       text: noteText,
       time_stamp: new Date().toUTCString(),
-      isEditing: false,
     };
     currentNote = newNote;
     notes = [currentNote, ...notes];
