@@ -56,7 +56,7 @@ export function setupNotes<T extends HTMLElement = HTMLElement>(element: T) {
     }
     createButton!.disabled = false;
     addButton!.disabled = false;
-    saveButton!.disabled = true;
+    noteInput!.value = "";
     renderNotes();
   });
 
