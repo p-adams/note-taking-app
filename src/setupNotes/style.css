@@ -1,0 +1,16 @@
+.notes--inner {
+  min-height: 500px;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  outline: 1px solid lightgray;
+  border-radius: 4px;
+}
+
+.notes--inner aside {
+  border-right: 1px solid lightgray;
+}
+
+#noteInput {
+  height: 100%;
+  resize: none;
+}

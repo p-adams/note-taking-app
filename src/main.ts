@@ -1,5 +1,5 @@
 import "./style.css";
-import { setupNotes } from "./notes.ts";
+import { setupNotes } from "./setupNotes";
 import { $el } from "./utils.ts";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
